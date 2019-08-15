@@ -10,13 +10,103 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
 
+
 ```{r}
-plot(cars)
+#import libraries
+library(plyr)
+library(tidyverse)
+library(dplyr)
+library(corrplot)
+library(ggplot2)
+library(ggcorrplot)
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+```{r}
+#Import dataset diemthi2019.csv
+diemthi2019 <- read.csv('~/Desktop/2019 vietnam national high school exam/diemthi2019.csv', row.names = NULL)
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+#Choose necessary columns and reorder them
+diemthi2019 <- diemthi2019[c(12, 10, 11, 7, 6, 5, 4, 8, 9, 2, 3)]
+head(diemthi2019)
+
+#Import and modify dataset province_code.csv
+province_code <- read.csv('~/Desktop/2019 vietnam national high school exam/province_code.csv', sep = ";", row.names = NULL)
+for (i in 1:9) {
+  province_code[i,1] <- paste('0',as.character(province_code[i,1]), sep = '')
+}
+head(province_code)
+
+#Change column type of province_code.csv
+province_code$Province_code <- as.numeric(province_code$Province_code) 
+province_code$Province_name <- as.factor(province_code$Province_name)
+```
+
+
+```{r}
+#Change column name for diemthi2019.csv
+diemthi2019 <- plyr::rename(diemthi2019, c(
+    'sbd' = 'Student_index',
+    'Toan'= 'Maths',
+    'Van' = 'Literature',
+    'Ngoai_ngu' = 'Foreign_language',
+    'Ma_mon_ngoai_ngu' = 'Foreign_language_code',
+    'Li' = 'Physics',
+    'Hoa' = 'Chemistry',
+    'Sinh' = 'Biology',
+    'Su' = 'History',
+    'Dia' = 'Geography',
+    'GDCD' = 'Citizenship_education'
+    )
+  )
+head(diemthi2019)
+```
+
+```{r}
+#Insert province_code for diemthi2019.csv
+diemthi2019$Province_code <- substr(as.character(diemthi2019$Student_index), start = 1, stop = 2)
+diemthi2019$Province_code <- as.factor(diemthi2019$Province_code)
+head(diemthi2019)
+```
+
+```{r}
+#Merge diemthi2019.csv and province_code.csv
+diemthi2019 <- join(diemthi2019, province_code, by = "Province_code")
+head(diemthi2019)
+
+```
+
+
+```{r}
+#Calculate scores of combinations A00, A01, B00, C00, D00
+diemthi2019$A00 <- diemthi2019$Maths + diemthi2019$Physics + diemthi2019$Chemistry
+if(diemthi2019$Foreign_language_code == 'N1') {
+  diemthi2019$A01 <- diemthi2019$Maths + diemthi2019$Literature + diemthi2019$Foreign_language
+}
+diemthi2019$B00 <- diemthi2019$Maths + diemthi2019$Chemistry + diemthi2019$Biology
+diemthi2019$C00 <- diemthi2019$Literature + diemthi2019$History + diemthi2019$Geography
+if(diemthi2019$Foreign_language_code == 'N1') {
+  diemthi2019$D00 <- diemthi2019$Maths + diemthi2019$Literature + diemthi2019$Foreign_language
+}
+head(diemthi2019)
+```
+
+
+
+
+
+```{r}
+#numerical df for correlation matrix
+diemthi2019_corr <- diemthi2019[c(2:16)]
+
+#correlation matrix
+diemthi2019_corr_matrix <- cor(diemthi2019_corr, use="pairwise.complete.obs")
+View(diemthi2019_corr_matrix)
+
+#correlation heatmap
+ggcorrplot(diemthi2019_corr_matrix, hc.order = TRUE,
+   lab = TRUE)
+```
+
+
 

@@ -233,17 +233,170 @@ summary {
 <p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Cmd+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxvdChjYXJzKVxuYGBgIn0= -->
-<pre class="r"><code>plot(cars)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2ltcG9ydCBsaWJyYXJpZXNcbmxpYnJhcnkocGx5cilcbmxpYnJhcnkodGlkeXZlcnNlKVxubGlicmFyeShkcGx5cilcbmxpYnJhcnkoY29ycnBsb3QpXG5saWJyYXJ5KGdncGxvdDIpXG5saWJyYXJ5KGdnY29ycnBsb3QpXG5gYGAifQ== -->
+<pre class="r"><code>#import libraries
+library(plyr)
+library(tidyverse)
+library(dplyr)
+library(corrplot)
+library(ggplot2)
+library(ggcorrplot)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by pressing <em>Cmd+Option+I</em>.</p>
-<p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or press <em>Cmd+Shift+K</em> to preview the HTML file).</p>
-<p>The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0ltcG9ydCBkYXRhc2V0IGRpZW10aGkyMDE5LmNzdlxuZGllbXRoaTIwMTkgPC0gcmVhZC5jc3YoJ34vRGVza3RvcC8yMDE5IHZpZXRuYW0gbmF0aW9uYWwgaGlnaCBzY2hvb2wgZXhhbS9kaWVtdGhpMjAxOS5jc3YnLCByb3cubmFtZXMgPSBOVUxMKVxuI0Nob29zZSBuZWNlc3NhcnkgY29sdW1ucyBhbmQgcmVvcmRlciB0aGVtXG5kaWVtdGhpMjAxOSA8LSBkaWVtdGhpMjAxOVtjKDEyLCAxMCwgMTEsIDcsIDYsIDUsIDQsIDgsIDksIDIsIDMpXVxuaGVhZChkaWVtdGhpMjAxOSlcbmBgYCJ9 -->
+<pre class="r"><code>#Import dataset diemthi2019.csv
+diemthi2019 &lt;- read.csv('~/Desktop/2019 vietnam national high school exam/diemthi2019.csv', row.names = NULL)
+#Choose necessary columns and reorder them
+diemthi2019 &lt;- diemthi2019[c(12, 10, 11, 7, 6, 5, 4, 8, 9, 2, 3)]
+head(diemthi2019)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTEsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNFZUelU3YlFCRGVyUFBUT0FLRkVBa2txZ0FQUUNUQ2o4UnRKU0xCZ1hLQXF1V0dsc1FKRm1ZWE9RNnR1TFN2UVkvdG5aZW9lb01qOS9JR1BBRXdhODhzZUFWaXBQRjgvblorZHNianZlNUJ4ei93R1dPY2VTWE91QWV3eU9GUllFVldOZlk3WTk0MGdCcm9CR2k1b0w3Kzhmek9mOUIvb0xlZ042Qi80V3pTbkl1RlFTcGljU1VWMGJ3MmNpT21MbzM4RWpQSWY4ejQ1emlXaXBpOWFsN2NiVjJKYVh4dkVJOTJqcEZrY1Myc2gvRS83czJ6OHB1c3JZc1cra243U0p2T3RJQ0s3N2tCbEtQZ1BJaEdnT29tSGJJTUxkOWR0cWhqMFlwRnF4YXRXYlR1VkNqMUlqbWlBcmJzUVBZU0hRTjZvRVp0UXdzL1gyM1VucmZ5QTdKODQvVUIyZk9aTitKbTM0bjc0SHdRNTM2aW5oMEtqblkrbjgvR09ieVlRbjlhQkNldmpWdDA2bUVmb29tMjVkYkxqMS9KMDRER1gwUFNHeDMxRVJZL2E2bUkvbUpoZFhlb1pYaW9obU1rNnAvazRhbFd3T1I1dmhOUzlMYVdsSFEvVk1ma3NFK3VYamUwRGx2ZHphNXowMnFzdjdYcHRtYUhlZGE0MldYajZEMnkvQkw1ZlpuSTlpQ0dFSll1VWk1ZFJaOGxvVmFRakpzSmw1emdRdXdROWJFeXhmdEx2ZU94T2xuYVdETVYyUFBmTTRHMi9BTFhzcHBGdWxtSjFqdFF3MUFGOUFraWVSUkUrRElKWGFaTnRzL2lVQ1hVQ3JDamRxSVRTWDUrVDBmRVpIL0p3eFB4ZFR4Y3p3UUFBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["sbd"],"name":[1],"type":["int"],"align":["right"]},{"label":["Toan"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Van"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Ngoai_ngu"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Ma_mon_ngoai_ngu"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["Li"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Hoa"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Sinh"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Su"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Dia"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["GDCD"],"name":[11],"type":["dbl"],"align":["right"]}],"data":[{"1":"24008611","2":"8.2","3":"8.00","4":"7.6","5":"N1","6":"NA","7":"NA","8":"NA","9":"8.25","10":"7.75","11":"8.75","_rn_":"1"},{"1":"51000032","2":"8.6","3":"6.17","4":"8.0","5":"N1","6":"8.25","7":"4.50","8":"6","9":"NA","10":"NA","11":"NA","_rn_":"2"},{"1":"51000005","2":"5.2","3":"4.75","4":"NA","5":"","6":"NA","7":"NA","8":"NA","9":"4.00","10":"4.25","11":"5.75","_rn_":"3"},{"1":"51000021","2":"4.4","3":"4.50","4":"NA","5":"","6":"NA","7":"NA","8":"NA","9":"2.25","10":"4.75","11":"5.00","_rn_":"4"},{"1":"51000013","2":"5.8","3":"6.00","4":"4.4","5":"N1","6":"NA","7":"NA","8":"NA","9":"7.75","10":"8.25","11":"7.50","_rn_":"5"},{"1":"51000003","2":"7.2","3":"6.75","4":"4.4","5":"N1","6":"7.50","7":"5.75","8":"3","9":"NA","10":"NA","11":"NA","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[11]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0ltcG9ydCBhbmQgbW9kaWZ5IGRhdGFzZXQgcHJvdmluY2VfY29kZS5jc3ZcbnByb3ZpbmNlX2NvZGUgPC0gcmVhZC5jc3YoJ34vRGVza3RvcC8yMDE5IHZpZXRuYW0gbmF0aW9uYWwgaGlnaCBzY2hvb2wgZXhhbS9wcm92aW5jZV9jb2RlLmNzdicsIHNlcCA9IFwiO1wiLCByb3cubmFtZXMgPSBOVUxMKVxuZm9yIChpIGluIDE6OSkge1xuICBwcm92aW5jZV9jb2RlW2ksMV0gPC0gcGFzdGUoJzAnLGFzLmNoYXJhY3Rlcihwcm92aW5jZV9jb2RlW2ksMV0pLCBzZXAgPSAnJylcbn1cbmhlYWQocHJvdmluY2VfY29kZSlcbmBgYCJ9 -->
+<pre class="r"><code>#Import and modify dataset province_code.csv
+province_code &lt;- read.csv('~/Desktop/2019 vietnam national high school exam/province_code.csv', sep = &quot;;&quot;, row.names = NULL)
+for (i in 1:9) {
+  province_code[i,1] &lt;- paste('0',as.character(province_code[i,1]), sep = '')
+}
+head(province_code)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MiwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUEyVlVXMi9UTUJUMjBrdWFqTUlRRWtKQ1NQNERyV0N3U1R5aHBaV28xQ3dxVzFSdFQ4aGtXV0l0dGFzMEh1eU5YejQ0SjQyZFN4K2MrSHpuOXAxemJGL05iMDdkRzVjUVlwSGV3Q0pXRDdaOUN6NUhwRThjL1A4aHBQZW1OQ0RrQk5hd1VsZ2ZQNW5kcWRsOU5yc3ZabmRtZHVjUWExekdJT1FkckErdzNsZHgzOEo2MVVrK3pPTEhPTnRWRnQ4cWxGVC8wWVdnM3prVFNTVy85aGk5NG94TzZGcUpoSVpNVlFySFkxSEwwa1pneVlRT2hLTFBZOVdVQXk1U1l4NExHdVp4SmJvZXFPZ2NQMjFFU1pOaGo2eFNKYU1XRXFiS3BCM09HTDAwSk8wWmd5U3AxQnhtVEZLdnBqeWFNeHFBU0d2NWdmcXdtbkpRRTNEbUhFaDc4REVBS0NFRXB5MGdUTmxXQXd1Mjc1SzJHQzR3NTBZVFJFa2E5eEdJWWFNSDRNMWJMU2lCVmRvQ1ZHc01MeGFTemxKT0wxdGhKS05lQzhCaDNrSXh1cEhMbElFYTdReUN0YllHdkpUUVRLV3BqM3lnTWt2ckErR3pEUzNMcncxQXVKYTZXYllQM1ljSkdCRnRMMHdyQTNSdmNMU0RKSTJiZXRSNTlRRnlnKzdzYlRnYWpXbVg0cTJabGZ0RElaOUdCR2VQMU5Pb1RJS0U4UTV5NEJUbTJzUzVsaEdJZForR1VES2NJdDJGa0QwMS9WMDRITHcxak9NU0NSTDFWSE1OdStONGlZVkNjVGlVaFRLM0p1d09hUVJNNkxwT2R4eGlXRnFTMWs2b3BuNWpVczY2dWxqNlh0bDRORHpvUXZ2cEdFUVoyK21Ydzd3bjl5d3FaQTY3NTY2NVlKdFltMXNWT0Y3bDhwR0xLUDRaeWJ2NEFFU1hUaGdubDcrbk9oUytkTmJmOHNIQ0Z3OE5lLzg2ak53N1ZyRHBmVjZHT21CbHkyM0JwWUJnRmo3Qmc0N3pVZDRCVHBUQTVIZVRLRlhpWWZMMURET1UrdjBhVi85aFkyL3RjL1kxczRIdVZTd1NMblRWZzR6OWlqTTlZS2l5TEhLNnpia29kQ21BN3FhRkxKaTJjeU9aYWFRc2pqei9CNWMxa0haeEJnQUEifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Province_code"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Province_name"],"name":[2],"type":["fctr"],"align":["left"]}],"data":[{"1":"01","2":"Ha Noi","_rn_":"1"},{"1":"02","2":"Ho Chi Minh","_rn_":"2"},{"1":"03","2":"Hai Phong","_rn_":"3"},{"1":"04","2":"Da Nang","_rn_":"4"},{"1":"05","2":"Ha Giang","_rn_":"5"},{"1":"06","2":"Cao Bang","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0NoYW5nZSBjb2x1bW4gdHlwZSBvZiBwcm92aW5jZV9jb2RlLmNzdlxucHJvdmluY2VfY29kZSRQcm92aW5jZV9jb2RlIDwtIGFzLm51bWVyaWMocHJvdmluY2VfY29kZSRQcm92aW5jZV9jb2RlKSBcbnByb3ZpbmNlX2NvZGUkUHJvdmluY2VfbmFtZSA8LSBhcy5mYWN0b3IocHJvdmluY2VfY29kZSRQcm92aW5jZV9uYW1lKVxuYGBgIn0= -->
+<pre class="r"><code>#Change column type of province_code.csv
+province_code$Province_code &lt;- as.numeric(province_code$Province_code) 
+province_code$Province_name &lt;- as.factor(province_code$Province_name)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0NoYW5nZSBjb2x1bW4gbmFtZSBmb3IgZGllbXRoaTIwMTkuY3N2XG5kaWVtdGhpMjAxOSA8LSBwbHlyOjpyZW5hbWUoZGllbXRoaTIwMTksIGMoXG4gICAgJ3NiZCcgPSAnU3R1ZGVudF9pbmRleCcsXG4gICAgJ1RvYW4nPSAnTWF0aHMnLFxuICAgICdWYW4nID0gJ0xpdGVyYXR1cmUnLFxuICAgICdOZ29haV9uZ3UnID0gJ0ZvcmVpZ25fbGFuZ3VhZ2UnLFxuICAgICdNYV9tb25fbmdvYWlfbmd1JyA9ICdGb3JlaWduX2xhbmd1YWdlX2NvZGUnLFxuICAgICdMaScgPSAnUGh5c2ljcycsXG4gICAgJ0hvYScgPSAnQ2hlbWlzdHJ5JyxcbiAgICAnU2luaCcgPSAnQmlvbG9neScsXG4gICAgJ1N1JyA9ICdIaXN0b3J5JyxcbiAgICAnRGlhJyA9ICdHZW9ncmFwaHknLFxuICAgICdHRENEJyA9ICdDaXRpemVuc2hpcF9lZHVjYXRpb24nXG4gICAgKVxuICApXG5oZWFkKGRpZW10aGkyMDE5KVxuYGBgIn0= -->
+<pre class="r"><code>#Change column name for diemthi2019.csv
+diemthi2019 &lt;- plyr::rename(diemthi2019, c(
+    'sbd' = 'Student_index',
+    'Toan'= 'Maths',
+    'Van' = 'Literature',
+    'Ngoai_ngu' = 'Foreign_language',
+    'Ma_mon_ngoai_ngu' = 'Foreign_language_code',
+    'Li' = 'Physics',
+    'Hoa' = 'Chemistry',
+    'Sinh' = 'Biology',
+    'Su' = 'History',
+    'Dia' = 'Geography',
+    'GDCD' = 'Citizenship_education'
+    )
+  )
+head(diemthi2019)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTEsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNFZUelc3VU1CRDJKcHRkTnF1dHR1MVdyUVJhMmdmb1NteExwZDRzaWlnSFFBZ085TFl5aVRleFNPMVY0dENmQzd3R0hPSGVsMERjNkpFN3ZBRlBVTEFUajB1c0lrYWF6UGdiejB5K3NmM2k0ZEUwUEFvUlFoN3lBdzk1dm5MYm52cTBVQnYxdEQxRnlGOVZUbC9wUUdtbnhWOTk5c1BwRDZWZmxYNVhlcW4waTRvdDZUamVuRmVDdDNZcXdhTnZXaTd4OGdjdEgvRzZ3ZS9VK0hVZXFnUnZYSXpPZng1ZTRGV3pYZ0hjMk5zSXBNNGJtMzRtLzkwdi9lMStBbXY3R3F2NFZEd3EwclcyakpwMVl3Q2RqTDZsV2FHOG9TNW5VR1NzOSt5ZTlhYlcyN0hlcnZYdVcyL1A2UkJFR1NtZ2dXMDdKNUVVdWZLdWdLZ2x0UG4rUnFJMlBtNE95T0lyTncvSXh0Zi9rYmZ4bjd4YnpvRTQvNGVIZFJCN3h0NXQxck41RG82WHpYNjRDRTVkbTdmbDlETTg4TWpZc2R1dk9YNU9qaW1NdjIvQXdVdFp4cFRMR2VNeFBZV2RUNGxNQzdNSW56QkpjeUxMbkJwaytFamtsQ1Y4bGhHZWxDUUJmTTNGWjVHSUlkaDlucDRWTElLcXZZT1VIck5DNW1jUWY4QkVKaEs3Zkt5Q3drWjdoMVFrT1Zta0FLd2RNTW5PS1M5U3RwalJ1SXlJWklJN2pIdTVPSmtBYS8wV3ZIcUErazNvamY1djFMeU1ZVXdrbWN4emxZS3FDOWtvMXhVTDNVUVY4L1JKQlU1eUszZUFZY2wxODNnN1NrditabnQvVDNkQTE2OXdZR3puTDc5ZjkyekRud1h3VENoUEdJZGhCaGw1VFRPeldGSXNLNUtUUmM2NEJDb0tMU1pTU0FMN3draGtnTlN2N2VvUDBYZjl3eGNGQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Student_index"],"name":[1],"type":["int"],"align":["right"]},{"label":["Maths"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Literature"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Foreign_language"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Foreign_language_code"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["Physics"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Chemistry"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Biology"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["History"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Geography"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Citizenship_education"],"name":[11],"type":["dbl"],"align":["right"]}],"data":[{"1":"24008611","2":"8.2","3":"8.00","4":"7.6","5":"N1","6":"NA","7":"NA","8":"NA","9":"8.25","10":"7.75","11":"8.75","_rn_":"1"},{"1":"51000032","2":"8.6","3":"6.17","4":"8.0","5":"N1","6":"8.25","7":"4.50","8":"6","9":"NA","10":"NA","11":"NA","_rn_":"2"},{"1":"51000005","2":"5.2","3":"4.75","4":"NA","5":"","6":"NA","7":"NA","8":"NA","9":"4.00","10":"4.25","11":"5.75","_rn_":"3"},{"1":"51000021","2":"4.4","3":"4.50","4":"NA","5":"","6":"NA","7":"NA","8":"NA","9":"2.25","10":"4.75","11":"5.00","_rn_":"4"},{"1":"51000013","2":"5.8","3":"6.00","4":"4.4","5":"N1","6":"NA","7":"NA","8":"NA","9":"7.75","10":"8.25","11":"7.50","_rn_":"5"},{"1":"51000003","2":"7.2","3":"6.75","4":"4.4","5":"N1","6":"7.50","7":"5.75","8":"3","9":"NA","10":"NA","11":"NA","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[11]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0luc2VydCBwcm92aW5jZV9jb2RlIGZvciBkaWVtdGhpMjAxOS5jc3ZcbmRpZW10aGkyMDE5JFByb3ZpbmNlX2NvZGUgPC0gc3Vic3RyKGFzLmNoYXJhY3RlcihkaWVtdGhpMjAxOSRTdHVkZW50X2luZGV4KSwgc3RhcnQgPSAxLCBzdG9wID0gMilcbmRpZW10aGkyMDE5JFByb3ZpbmNlX2NvZGUgPC0gYXMuZmFjdG9yKGRpZW10aGkyMDE5JFByb3ZpbmNlX2NvZGUpXG5oZWFkKGRpZW10aGkyMDE5KVxuYGBgIn0= -->
+<pre class="r"><code>#Insert province_code for diemthi2019.csv
+diemthi2019$Province_code &lt;- substr(as.character(diemthi2019$Student_index), start = 1, stop = 2)
+diemthi2019$Province_code &lt;- as.factor(diemthi2019$Province_code)
+head(diemthi2019)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTIsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNFdWelc3VFFCREhOMDdUa2lpdDBpKzFFaWkwUnc2TjZzKzJONHNpeWdGUUJRZDZpNHl6VFZaMTE1RzlLVzB2OEJwd2hIdGZBbkdqUis3d0JqeEJZVGZlL1plWUlGWWE3K3lNWjM2ZW5iWDk0dEdSMHpocUVFSXNVcTFaeEtwS2RjYVNsd3FaSVhVMW54TlNYWlpLVThxOGxOa0tmL1dwMm5DK1Mva2k1WnVVYXltZnBXOUIrY09ONC9FSU45M3hDRmUrcW5FZExyNVg0ME80cHUzM0N2dHRIQm1QY1AxcTVmTEh3Vlc0ck5kTHhxN251OFNNSXE2dGVUcis3VTkxbmZ0b1puRDFMT3NaMXpFdXVwQ0tGcjJlMklEWmhKN1JKSmRhUzZYVFZxSm42N2tOellIbVF2T2crZENDRXFFV0oxRnVBTUFlUjdGSU02bmRtRUpSME1hN3FZWEMzNTdjSU5pWHBtOFEvR3YvaUZ2L1Q5eWRVa05LenhlMkNtZG82Zm4rWkQ3RWxlemhvcjdmSElSU1hzUnRsbmk2am5CRnorMHlEd2RBeFQvNFcxUjdyRitrNk1pZWFaeTlEUTFOdDlGMEcwMjMwWFFiVGJjRGFEdlFkcUdCNFNDemc4d09NanZJN0NDemc4d09NanZJN0NDemk2ZDN3WERCY01Gd3dYREJjTUZ3d1hEQmNNSHd3UERBOE1Ed3dQREE4TUR3d1BEQThNRHd3UERCOE1Id3dmREI4TUh3d2ZEQjhNSHd3ZkRCQ01BSXdBakFDTUFJd05oQnhDNjB2ZTNpSkZYTlNacjZiazkrQ25oMFNzMm5vS21OOHkvRnFFZTU2RExlbytmbXptZVJHT1I2MFhqS0JNMGlNY3FvdHJRZXB4bGxmZDVOSXQ0ZlJYMWpYeTNidTNIYU04NjV3OEZGem1LVHRiNC9vS2NzRjltRjhUOWthWkwyc1h3aW5TbTg5UU9hOXJOb09EQ0cxWDBtMkNYbCtZQU51N1EzaWlQQlVtNktPc3pTTThaai9RQ1QyMURQMGpjZHN4WHFYYldLTjF5OXMxTjN0TkdMUk5RNXptVElsRjJkUzRlS0xKTlo2bE5TS3dWWHNwS2hOZUlLM3R1S0J5Titzclczb3dqazlqY3hyK2ZaUC9SbXdad3hUMVl6dmFhOHo3alo0Vm9TdmFhSlhpeklLc2RGZG9ZWjQ4S1VJcTE1UjZRaU12YzE0alF4bHVKM2NQTWJ0SWdGYUxnSEFBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Student_index"],"name":[1],"type":["int"],"align":["right"]},{"label":["Maths"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Literature"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Foreign_language"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Foreign_language_code"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["Physics"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Chemistry"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Biology"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["History"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Geography"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Citizenship_education"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["Province_code"],"name":[12],"type":["fctr"],"align":["left"]}],"data":[{"1":"24008611","2":"8.2","3":"8.00","4":"7.6","5":"N1","6":"NA","7":"NA","8":"NA","9":"8.25","10":"7.75","11":"8.75","12":"24","_rn_":"1"},{"1":"51000032","2":"8.6","3":"6.17","4":"8.0","5":"N1","6":"8.25","7":"4.50","8":"6","9":"NA","10":"NA","11":"NA","12":"51","_rn_":"2"},{"1":"51000005","2":"5.2","3":"4.75","4":"NA","5":"","6":"NA","7":"NA","8":"NA","9":"4.00","10":"4.25","11":"5.75","12":"51","_rn_":"3"},{"1":"51000021","2":"4.4","3":"4.50","4":"NA","5":"","6":"NA","7":"NA","8":"NA","9":"2.25","10":"4.75","11":"5.00","12":"51","_rn_":"4"},{"1":"51000013","2":"5.8","3":"6.00","4":"4.4","5":"N1","6":"NA","7":"NA","8":"NA","9":"7.75","10":"8.25","11":"7.50","12":"51","_rn_":"5"},{"1":"51000003","2":"7.2","3":"6.75","4":"4.4","5":"N1","6":"7.50","7":"5.75","8":"3","9":"NA","10":"NA","11":"NA","12":"51","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[12]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI01lcmdlIGRpZW10aGkyMDE5LmNzdiBhbmQgcHJvdmluY2VfY29kZS5jc3ZcbmRpZW10aGkyMDE5IDwtIGpvaW4oZGllbXRoaTIwMTksIHByb3ZpbmNlX2NvZGUsIGJ5ID0gXCJQcm92aW5jZV9jb2RlXCIpXG5oZWFkKGRpZW10aGkyMDE5KVxuYGBgIn0= -->
+<pre class="r"><code>#Merge diemthi2019.csv and province_code.csv
+diemthi2019 &lt;- join(diemthi2019, province_code, by = &quot;Province_code&quot;)
+head(diemthi2019)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTMsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNDFXeTI3YlJoU2xKVnV2VklHZE9FaUFGdTVrMllXTmlBL0ZYcFdSakZxQVpjR05CVGRaR1ZPS0pnZVJPUUpGcG5FMnpXKzB5M2FmbnlpNmE1YmR0My9RTDBnN1E4NGNpclNMbHNCdzdtUHVQZmZGQVo4ZnZqQTdMenFHWWRTTStrYk5xTlVGdVY0VHJ6VmozV2pML1kxaDFPOExvcXRXWXkzNjV1ZDZ4L3hEckYvRitsMnNEMkw5SW5SM3BkNGxsOW5qUHJheXg5MytUVDRmM0swZjVQT2orMURKUDh2bGhaMlJQZTZqOTl0di96eDY3OTVYL0QwdFYvdW5objV5dXgyRnAreS8vMHUrbXovcEhiaHFGL2xrZVdSSjUydE5MY1dYQ3RDWSs2LzkrVkpRbTlLZGtocHFyMDE2b0V4UUZpZ2JsQU9xWDBIWThPWjBxUUVBZTBtOWhNZUMrcWdUUlVMazNhMkpRcjlUTGhEazkyNHZFUFFQLzhYdTBYL1l0U29OcWNUbmJ1Wkt0NmIyejh2K1lGZVJ1MXZxdkI2RWlsL1lQYTdncVR6Y2JiWHZWUEV3QU5MK2k1dEx0cWYydDVGMzVFQTNydmNFRkpyZVE5TjdhSG9QVGUraDZiMCtxS2VnOWtFQnc0Um5FNTVOZURiaDJZUm5FNTVOZURiaDJZUm5DOUZid0xDQVlRSERBb1lGREFzWUZqQXNZRmpBc0lGaEE4TUdoZzBNR3hnMk1HeGcyTUN3Z1dFRHd3R0dBd3dIR0E0d0hHQTR3SENBNFFEREFZWURqRDR3K3NEb0E2TVBqRDR3bnNKaUg5VEJrM3lTNm5xU2J2MjJNWXR5YW1zM1Yya1d2NnhjUDYxbkVUbGlOQW9VdnpXZzVEbWpaSmVjcDFGQXBqUlZpdmFBZXFXVFRTazRwcEYySk5reDg5TlZmc0tpRU1mOWlFeGpYN0dkZ1ZDUlEva3FTMUlPaEZ4eUdxYmNLMG1tWVFyWXhwQ1NFd1RaSEZJQkVuSWR3NUJ5TWloQ2JoMVNNaEVzS2ZoWFpDeldLajhwQW1nZk1oSDBRTHdnRUVyaGdwR1NZQnJTaFJhTWFGNGxmYUl4a3BoWE9rREpjWmkzQkR0ZHFZR3dacVVTWklMVHNDUklTMjM0Wk1USk1HVGtwT1NHVXpJb0NXUXpYNHBrZENHUFF5clU4aHdrTXRkU2c0KzVLR2FxUTIrTlJTakRzQmlJTWIwaVdmckZBY0djY1YyczVsaFVYM1FBckR6N0RLV2NTUE9WR0p1VElQUlg5VkkzS0Fhb002bjJ2aWxHWTZYYkdmc1N2ZXA4bmNwNFZqeTBjMG5SRFhWa0VsQldrZHd3bXNiNlNQdU1lNEl0NnRRUUtZc3AwbFdZMHV0Vis0NFlEbFpxeHAxTU1nblM2eUxXYWJVZGQyV2lJam5abEZHS3IyWmFiVkpMUkVMT0M3ZzdVK21XWkVGckk2a200NVZPdGMvVmg2Vy9xNlljallHb3d2KzRic3AvSGhHOTh2V2ZSMWNKdTJkSk92T2o1SUpGTS8rTlBubENrM0NwUXhxenhJOXBrdUkrMlB5S3h6NExvb3U1Q0R5bGdaWS9xTW92UEQ3emk0NWZMNW1udmJhSG9YL0Zsa2w4alR1SDhUa1B3STZFa2tQYlB2SjVFTk5GcUFVUGhpeGhiLzFvR2JMRmhUOUxQWm93VEhQM05PYXZXZVNWQWlpRXNnNlYyclJqL3QyZXJvKzhvMnZ2c290WDN0VzNscmt6b3duZHU0d3pWemRLM2VRTEdZNXdWcE8vTXhzVjQ3VzRJdGhNSXdrKzIvWENOSHExZTdBdkVZemlWN1dyOXNZSzNjMHgxM1ZrRzNvQS9DaGdrYzU2WTA2LzllZDZVRVdXV1pKN2k1aEZpVTVGU0pkN0NVK29QdGZ4K0Z4TDhsL1NqLzhBa2ttUkR6d01BQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Student_index"],"name":[1],"type":["int"],"align":["right"]},{"label":["Maths"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Literature"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Foreign_language"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Foreign_language_code"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["Physics"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Chemistry"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Biology"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["History"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Geography"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Citizenship_education"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["Province_code"],"name":[12],"type":["fctr"],"align":["left"]},{"label":["Province_name"],"name":[13],"type":["fctr"],"align":["left"]}],"data":[{"1":"24008611","2":"8.2","3":"8.00","4":"7.6","5":"N1","6":"NA","7":"NA","8":"NA","9":"8.25","10":"7.75","11":"8.75","12":"24","13":"Ha Nam","_rn_":"1"},{"1":"51000032","2":"8.6","3":"6.17","4":"8.0","5":"N1","6":"8.25","7":"4.50","8":"6","9":"NA","10":"NA","11":"NA","12":"51","13":"An Giang","_rn_":"2"},{"1":"51000005","2":"5.2","3":"4.75","4":"NA","5":"","6":"NA","7":"NA","8":"NA","9":"4.00","10":"4.25","11":"5.75","12":"51","13":"An Giang","_rn_":"3"},{"1":"51000021","2":"4.4","3":"4.50","4":"NA","5":"","6":"NA","7":"NA","8":"NA","9":"2.25","10":"4.75","11":"5.00","12":"51","13":"An Giang","_rn_":"4"},{"1":"51000013","2":"5.8","3":"6.00","4":"4.4","5":"N1","6":"NA","7":"NA","8":"NA","9":"7.75","10":"8.25","11":"7.50","12":"51","13":"An Giang","_rn_":"5"},{"1":"51000003","2":"7.2","3":"6.75","4":"4.4","5":"N1","6":"7.50","7":"5.75","8":"3","9":"NA","10":"NA","11":"NA","12":"51","13":"An Giang","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[13]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0NhbGN1bGF0ZSBzY29yZXMgb2YgY29tYmluYXRpb25zIEEwMCwgQTAxLCBCMDAsIEMwMCwgRDAwXG5kaWVtdGhpMjAxOSRBMDAgPC0gZGllbXRoaTIwMTkkTWF0aHMgKyBkaWVtdGhpMjAxOSRQaHlzaWNzICsgZGllbXRoaTIwMTkkQ2hlbWlzdHJ5XG5pZihkaWVtdGhpMjAxOSRGb3JlaWduX2xhbmd1YWdlX2NvZGUgPT0gJ04xJykge1xuICBkaWVtdGhpMjAxOSRBMDEgPC0gZGllbXRoaTIwMTkkTWF0aHMgKyBkaWVtdGhpMjAxOSRMaXRlcmF0dXJlICsgZGllbXRoaTIwMTkkRm9yZWlnbl9sYW5ndWFnZVxufVxuYGBgIn0= -->
+<pre class="r"><code>#Calculate scores of combinations A00, A01, B00, C00, D00
+diemthi2019$A00 &lt;- diemthi2019$Maths + diemthi2019$Physics + diemthi2019$Chemistry
+if(diemthi2019$Foreign_language_code == 'N1') {
+  diemthi2019$A01 &lt;- diemthi2019$Maths + diemthi2019$Literature + diemthi2019$Foreign_language
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoidGhlIGNvbmRpdGlvbiBoYXMgbGVuZ3RoID4gMSBhbmQgb25seSB0aGUgZmlyc3QgZWxlbWVudCB3aWxsIGJlIHVzZWRcbiJ9 -->
+<pre><code>the condition has length &gt; 1 and only the first element will be used</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGllbXRoaTIwMTkkQjAwIDwtIGRpZW10aGkyMDE5JE1hdGhzICsgZGllbXRoaTIwMTkkQ2hlbWlzdHJ5ICsgZGllbXRoaTIwMTkkQmlvbG9neVxuZGllbXRoaTIwMTkkQzAwIDwtIGRpZW10aGkyMDE5JExpdGVyYXR1cmUgKyBkaWVtdGhpMjAxOSRIaXN0b3J5ICsgZGllbXRoaTIwMTkkR2VvZ3JhcGh5XG5pZihkaWVtdGhpMjAxOSRGb3JlaWduX2xhbmd1YWdlX2NvZGUgPT0gJ04xJykge1xuICBkaWVtdGhpMjAxOSREMDAgPC0gZGllbXRoaTIwMTkkTWF0aHMgKyBkaWVtdGhpMjAxOSRMaXRlcmF0dXJlICsgZGllbXRoaTIwMTkkRm9yZWlnbl9sYW5ndWFnZVxufVxuYGBgIn0= -->
+<pre class="r"><code>diemthi2019$B00 &lt;- diemthi2019$Maths + diemthi2019$Chemistry + diemthi2019$Biology
+diemthi2019$C00 &lt;- diemthi2019$Literature + diemthi2019$History + diemthi2019$Geography
+if(diemthi2019$Foreign_language_code == 'N1') {
+  diemthi2019$D00 &lt;- diemthi2019$Maths + diemthi2019$Literature + diemthi2019$Foreign_language
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoidGhlIGNvbmRpdGlvbiBoYXMgbGVuZ3RoID4gMSBhbmQgb25seSB0aGUgZmlyc3QgZWxlbWVudCB3aWxsIGJlIHVzZWRcbiJ9 -->
+<pre><code>the condition has length &gt; 1 and only the first element will be used</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChkaWVtdGhpMjAxOSlcbmBgYCJ9 -->
+<pre class="r"><code>head(diemthi2019)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTcsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNTJWdjIvVFFCVEhIYnRKU2FSV1NYK29SYURRVGdpa0J2OXV1NW0yb2d5QUNneTBVMlFjTjdGd3o1SHRsTFlMWGZnallJUzlNenZxMW83c3NMQ3dNRElWenZiZE45ajlnY1JKbDN2M250LzczTHQzZDNtMnRxbldObXVDSUlpQ1ZCWUZVYUxpaUVoL1NzS0lVRTNHUFVHUUpxblFvSDJNOWtxSnZQZ28xZFN2dEIvVC9vWDJVOW8vVTl0NFlyZm10dE5teld0cHM2Wk9rblpxTmQ0bDdiMDF3L1EzTS8zUVQwaWJOWHMwZGZCdC9jaWFaUE1Kcm1makRZRzN6Sy9KZU16L3pjL2tkL1FESDhGbEk4MG56U05OT3VzbDF0azh0d0VWMzkxMS9ZaEs5U1FjMHdwc0ZKOG9rRlJJR2lRZGtnSEpMQkRLam05SEhBRHN0dTNFUVVpbE01NG9FcG83dkRCUjJKdjVEWUorNHVJTmduM21Fci9aZi9oZEt4U2tzRDZybmhrdGtZMjM4dkhnVjlCYkRmWTlQd2lGdVBDYkwvQllIdFlVRzV0RkhnNUE0bi9uZkUvS0kvNFdzb29zODhJcE1pUVVYVUhSRlJSZFFkRVZGRjB4SVMxQ1dvSUVob3JJS2lLcmlLd2lzb3JJS2lLcmlLd2lzb3JJR2xhdmdhR0JvWUdoZ2FHQm9ZR2hnYUdCb1lHaGc2R0RvWU9oZzZHRG9ZT2hnNkdEb1lPaGcyR0FZWUJoZ0dHQVlZQmhnR0dBWVlCaGdHR0FZWUpoZ21HQ1lZSmhnckVJanlWSXkzSjJraVIra3E2NjI3L1kyVFcyMGtlS3o0dWpwVWZwNDRtenY1ZytvaWVXZWR6ODlQVEgyM1BmeStubnVxVnVzY2V2d05PdVg4Mjc5ejE5WE1GYlluZUoyKyt5TzNhYmpXYmUvdi9yekQrUnhONXgrUlBaWU1xeDUvR2c0NUs0N1pHT3U4ZS9mR3pIdlloTmFvKzgyQTN0ZUJDNlRGTi9FSVN1MXlWdDN5YmRnZDNsK3VtaXZ1MEVIVzRjM2VqdFI1N0RvMVpYZSs2T0Y4WGhQcmV2ZUlFZmRERjlTSTBCck5WMU4raUdkci9IRmRPclh1d2R1Q1RxZWYyMjJ4azRkdXdGaENlMUVRYTdIbkZ5QzVEdXkvSlE1RWRTV2hscVY0ZmltaXdYZHE4YUJxOWJmQWVUcDA4OHpLcFV1ZVNBMWpwMmJMZTJRK3FTSGRKY3VOR2dueXlZQmhPVGw3bGNjQzZGQlVWOVFCSjRaOEhwRGNpcmhXVWxJUWpEZjkweE5sYitraHNaYzRTdnJNeXZqa3U2SHVIN1V2YnRsNjdQSnVNMHl6VEpWai8wU014VG9kcW9GUWV4emIrck9ZSFBOZGtOUFBzRDBXQmdBUWNKQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Student_index"],"name":[1],"type":["int"],"align":["right"]},{"label":["Maths"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Literature"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Foreign_language"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Foreign_language_code"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["Physics"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Chemistry"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Biology"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["History"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Geography"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Citizenship_education"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["Province_code"],"name":[12],"type":["fctr"],"align":["left"]},{"label":["A00"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["A01"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["B00"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["C00"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["D00"],"name":[17],"type":["dbl"],"align":["right"]}],"data":[{"1":"24008611","2":"8.2","3":"8.00","4":"7.6","5":"N1","6":"NA","7":"NA","8":"NA","9":"8.25","10":"7.75","11":"8.75","12":"24","13":"NA","14":"23.80","15":"NA","16":"24.0","17":"23.80","_rn_":"1"},{"1":"51000032","2":"8.6","3":"6.17","4":"8.0","5":"N1","6":"8.25","7":"4.50","8":"6","9":"NA","10":"NA","11":"NA","12":"51","13":"21.35","14":"22.77","15":"19.10","16":"NA","17":"22.77","_rn_":"2"},{"1":"51000005","2":"5.2","3":"4.75","4":"NA","5":"","6":"NA","7":"NA","8":"NA","9":"4.00","10":"4.25","11":"5.75","12":"51","13":"NA","14":"NA","15":"NA","16":"13.0","17":"NA","_rn_":"3"},{"1":"51000021","2":"4.4","3":"4.50","4":"NA","5":"","6":"NA","7":"NA","8":"NA","9":"2.25","10":"4.75","11":"5.00","12":"51","13":"NA","14":"NA","15":"NA","16":"11.5","17":"NA","_rn_":"4"},{"1":"51000013","2":"5.8","3":"6.00","4":"4.4","5":"N1","6":"NA","7":"NA","8":"NA","9":"7.75","10":"8.25","11":"7.50","12":"51","13":"NA","14":"16.20","15":"NA","16":"22.0","17":"16.20","_rn_":"5"},{"1":"51000003","2":"7.2","3":"6.75","4":"4.4","5":"N1","6":"7.50","7":"5.75","8":"3","9":"NA","10":"NA","11":"NA","12":"51","13":"20.45","14":"18.35","15":"15.95","16":"NA","17":"18.35","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[17]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI251bWVyaWNhbCBkZiBmb3IgY29ycmVsYXRpb24gbWF0cml4XG5kaWVtdGhpMjAxOV9jb3JyIDwtIGRpZW10aGkyMDE5W2MoMjoxNildXG5cbiNjb3JyZWxhdGlvbiBtYXRyaXhcbmRpZW10aGkyMDE5X2NvcnJfbWF0cml4IDwtIGNvcihkaWVtdGhpMjAxOV9jb3JyLCB1c2U9XCJwYWlyd2lzZS5jb21wbGV0ZS5vYnNcIilcblZpZXcoZGllbXRoaTIwMTlfY29ycl9tYXRyaXgpXG5cbiNjb3JyZWxhdGlvbiBoZWF0bWFwXG5nZ2NvcnJwbG90KGRpZW10aGkyMDE5X2NvcnJfbWF0cml4LCBoYy5vcmRlciA9IFRSVUUsXG4gICBsYWIgPSBUUlVFKVxuYGBgIn0= -->
+<pre class="r"><code>#numerical df for correlation matrix
+diemthi2019_corr &lt;- diemthi2019[c(2:16)]
+
+#correlation matrix
+diemthi2019_corr_matrix &lt;- cor(diemthi2019_corr, use=&quot;pairwise.complete.obs&quot;)
+View(diemthi2019_corr_matrix)
+
+#correlation heatmap
+ggcorrplot(diemthi2019_corr_matrix, hc.order = TRUE,
+   lab = TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiMjAxOSBWaWV0bmFtIEhpZ2ggU2Nob29sIE5hdGlvbmFsIEdyYWR1YXRpb24gRXhhbSBzY29yZSBhbmFseXNpcyIKb3V0cHV0OiBodG1sX25vdGVib29rCmF1dGhvcjoKICAtIG5hbWU6IEhvYW5nIEFuaCBOR08KICAtIGFmZmlsaWF0aW9uOiBFY29sZSBQb2x5dGVjaG5pcXVlLCBJUCBQYXJpcwotLS0KClRoaXMgaXMgYW4gW1IgTWFya2Rvd25dKGh0dHA6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20pIE5vdGVib29rLiBXaGVuIHlvdSBleGVjdXRlIGNvZGUgd2l0aGluIHRoZSBub3RlYm9vaywgdGhlIHJlc3VsdHMgYXBwZWFyIGJlbmVhdGggdGhlIGNvZGUuIAoKVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkNtZCtTaGlmdCtFbnRlciouIAoKYGBge3J9CnBsb3QoY2FycykKYGBgCgpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ21kK09wdGlvbitJKi4KCldoZW4geW91IHNhdmUgdGhlIG5vdGVib29rLCBhbiBIVE1MIGZpbGUgY29udGFpbmluZyB0aGUgY29kZSBhbmQgb3V0cHV0IHdpbGwgYmUgc2F2ZWQgYWxvbmdzaWRlIGl0IChjbGljayB0aGUgKlByZXZpZXcqIGJ1dHRvbiBvciBwcmVzcyAqQ21kK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuIAoKVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiMjAxOSBWaWV0bmFtIEhpZ2ggU2Nob29sIE5hdGlvbmFsIEdyYWR1YXRpb24gRXhhbSBzY29yZSBhbmFseXNpcyIKb3V0cHV0OiBodG1sX25vdGVib29rCmF1dGhvcjoKICAtIG5hbWU6IEhvYW5nIEFuaCBOR08KICAtIGFmZmlsaWF0aW9uOiBFY29sZSBQb2x5dGVjaG5pcXVlLCBJUCBQYXJpcwotLS0KClRoaXMgaXMgYW4gW1IgTWFya2Rvd25dKGh0dHA6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20pIE5vdGVib29rLiBXaGVuIHlvdSBleGVjdXRlIGNvZGUgd2l0aGluIHRoZSBub3RlYm9vaywgdGhlIHJlc3VsdHMgYXBwZWFyIGJlbmVhdGggdGhlIGNvZGUuIAoKVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkNtZCtTaGlmdCtFbnRlciouIAoKCmBgYHtyfQojaW1wb3J0IGxpYnJhcmllcwpsaWJyYXJ5KHBseXIpCmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KGRwbHlyKQpsaWJyYXJ5KGNvcnJwbG90KQpsaWJyYXJ5KGdncGxvdDIpCmxpYnJhcnkoZ2djb3JycGxvdCkKYGBgCgoKYGBge3J9CiNJbXBvcnQgZGF0YXNldCBkaWVtdGhpMjAxOS5jc3YKZGllbXRoaTIwMTkgPC0gcmVhZC5jc3YoJ34vRGVza3RvcC8yMDE5IHZpZXRuYW0gbmF0aW9uYWwgaGlnaCBzY2hvb2wgZXhhbS9kaWVtdGhpMjAxOS5jc3YnLCByb3cubmFtZXMgPSBOVUxMKQoKI0Nob29zZSBuZWNlc3NhcnkgY29sdW1ucyBhbmQgcmVvcmRlciB0aGVtCmRpZW10aGkyMDE5IDwtIGRpZW10aGkyMDE5W2MoMTIsIDEwLCAxMSwgNywgNiwgNSwgNCwgOCwgOSwgMiwgMyldCmhlYWQoZGllbXRoaTIwMTkpCgojSW1wb3J0IGFuZCBtb2RpZnkgZGF0YXNldCBwcm92aW5jZV9jb2RlLmNzdgpwcm92aW5jZV9jb2RlIDwtIHJlYWQuY3N2KCd+L0Rlc2t0b3AvMjAxOSB2aWV0bmFtIG5hdGlvbmFsIGhpZ2ggc2Nob29sIGV4YW0vcHJvdmluY2VfY29kZS5jc3YnLCBzZXAgPSAiOyIsIHJvdy5uYW1lcyA9IE5VTEwpCmZvciAoaSBpbiAxOjkpIHsKICBwcm92aW5jZV9jb2RlW2ksMV0gPC0gcGFzdGUoJzAnLGFzLmNoYXJhY3Rlcihwcm92aW5jZV9jb2RlW2ksMV0pLCBzZXAgPSAnJykKfQpoZWFkKHByb3ZpbmNlX2NvZGUpCgojQ2hhbmdlIGNvbHVtbiB0eXBlIG9mIHByb3ZpbmNlX2NvZGUuY3N2CnByb3ZpbmNlX2NvZGUkUHJvdmluY2VfY29kZSA8LSBhcy5udW1lcmljKHByb3ZpbmNlX2NvZGUkUHJvdmluY2VfY29kZSkgCnByb3ZpbmNlX2NvZGUkUHJvdmluY2VfbmFtZSA8LSBhcy5mYWN0b3IocHJvdmluY2VfY29kZSRQcm92aW5jZV9uYW1lKQpgYGAKCgpgYGB7cn0KI0NoYW5nZSBjb2x1bW4gbmFtZSBmb3IgZGllbXRoaTIwMTkuY3N2CmRpZW10aGkyMDE5IDwtIHBseXI6OnJlbmFtZShkaWVtdGhpMjAxOSwgYygKICAgICdzYmQnID0gJ1N0dWRlbnRfaW5kZXgnLAogICAgJ1RvYW4nPSAnTWF0aHMnLAogICAgJ1ZhbicgPSAnTGl0ZXJhdHVyZScsCiAgICAnTmdvYWlfbmd1JyA9ICdGb3JlaWduX2xhbmd1YWdlJywKICAgICdNYV9tb25fbmdvYWlfbmd1JyA9ICdGb3JlaWduX2xhbmd1YWdlX2NvZGUnLAogICAgJ0xpJyA9ICdQaHlzaWNzJywKICAgICdIb2EnID0gJ0NoZW1pc3RyeScsCiAgICAnU2luaCcgPSAnQmlvbG9neScsCiAgICAnU3UnID0gJ0hpc3RvcnknLAogICAgJ0RpYScgPSAnR2VvZ3JhcGh5JywKICAgICdHRENEJyA9ICdDaXRpemVuc2hpcF9lZHVjYXRpb24nCiAgICApCiAgKQpoZWFkKGRpZW10aGkyMDE5KQpgYGAKCmBgYHtyfQojSW5zZXJ0IHByb3ZpbmNlX2NvZGUgZm9yIGRpZW10aGkyMDE5LmNzdgpkaWVtdGhpMjAxOSRQcm92aW5jZV9jb2RlIDwtIHN1YnN0cihhcy5jaGFyYWN0ZXIoZGllbXRoaTIwMTkkU3R1ZGVudF9pbmRleCksIHN0YXJ0ID0gMSwgc3RvcCA9IDIpCmRpZW10aGkyMDE5JFByb3ZpbmNlX2NvZGUgPC0gYXMuZmFjdG9yKGRpZW10aGkyMDE5JFByb3ZpbmNlX2NvZGUpCmhlYWQoZGllbXRoaTIwMTkpCmBgYAoKYGBge3J9CiNNZXJnZSBkaWVtdGhpMjAxOS5jc3YgYW5kIHByb3ZpbmNlX2NvZGUuY3N2CmRpZW10aGkyMDE5IDwtIGpvaW4oZGllbXRoaTIwMTksIHByb3ZpbmNlX2NvZGUsIGJ5ID0gIlByb3ZpbmNlX2NvZGUiKQpoZWFkKGRpZW10aGkyMDE5KQoKYGBgCgoKYGBge3J9CiNDYWxjdWxhdGUgc2NvcmVzIG9mIGNvbWJpbmF0aW9ucyBBMDAsIEEwMSwgQjAwLCBDMDAsIEQwMApkaWVtdGhpMjAxOSRBMDAgPC0gZGllbXRoaTIwMTkkTWF0aHMgKyBkaWVtdGhpMjAxOSRQaHlzaWNzICsgZGllbXRoaTIwMTkkQ2hlbWlzdHJ5CmlmKGRpZW10aGkyMDE5JEZvcmVpZ25fbGFuZ3VhZ2VfY29kZSA9PSAnTjEnKSB7CiAgZGllbXRoaTIwMTkkQTAxIDwtIGRpZW10aGkyMDE5JE1hdGhzICsgZGllbXRoaTIwMTkkTGl0ZXJhdHVyZSArIGRpZW10aGkyMDE5JEZvcmVpZ25fbGFuZ3VhZ2UKfQpkaWVtdGhpMjAxOSRCMDAgPC0gZGllbXRoaTIwMTkkTWF0aHMgKyBkaWVtdGhpMjAxOSRDaGVtaXN0cnkgKyBkaWVtdGhpMjAxOSRCaW9sb2d5CmRpZW10aGkyMDE5JEMwMCA8LSBkaWVtdGhpMjAxOSRMaXRlcmF0dXJlICsgZGllbXRoaTIwMTkkSGlzdG9yeSArIGRpZW10aGkyMDE5JEdlb2dyYXBoeQppZihkaWVtdGhpMjAxOSRGb3JlaWduX2xhbmd1YWdlX2NvZGUgPT0gJ04xJykgewogIGRpZW10aGkyMDE5JEQwMCA8LSBkaWVtdGhpMjAxOSRNYXRocyArIGRpZW10aGkyMDE5JExpdGVyYXR1cmUgKyBkaWVtdGhpMjAxOSRGb3JlaWduX2xhbmd1YWdlCn0KaGVhZChkaWVtdGhpMjAxOSkKYGBgCgoKCgoKYGBge3J9CiNudW1lcmljYWwgZGYgZm9yIGNvcnJlbGF0aW9uIG1hdHJpeApkaWVtdGhpMjAxOV9jb3JyIDwtIGRpZW10aGkyMDE5W2MoMjoxNildCgojY29ycmVsYXRpb24gbWF0cml4CmRpZW10aGkyMDE5X2NvcnJfbWF0cml4IDwtIGNvcihkaWVtdGhpMjAxOV9jb3JyLCB1c2U9InBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpClZpZXcoZGllbXRoaTIwMTlfY29ycl9tYXRyaXgpCgojY29ycmVsYXRpb24gaGVhdG1hcApnZ2NvcnJwbG90KGRpZW10aGkyMDE5X2NvcnJfbWF0cml4LCBoYy5vcmRlciA9IFRSVUUsCiAgIGxhYiA9IFRSVUUpCmBgYAoKCgo=</div>
 
 
 
