@@ -27,7 +27,6 @@ library(ggcorrplot)
 diemthi2019 <- read.csv('~/Desktop/2019 vietnam national high school exam/diemthi2019.csv', row.names = NULL)
 
 #Choose necessary columns and reorder them
-diemthi2019 <- diemthi2019[c(12, 10, 11, 7, 6, 5, 4, 8, 9, 2, 3)]
 head(diemthi2019)
 
 #Import and modify dataset province_code.csv
@@ -35,11 +34,13 @@ province_code <- read.csv('~/Desktop/2019 vietnam national high school exam/prov
 for (i in 1:9) {
   province_code[i,1] <- paste('0',as.character(province_code[i,1]), sep = '')
 }
-head(province_code)
 
 #Change column type of province_code.csv
-province_code$Province_code <- as.numeric(province_code$Province_code) 
+province_code$Province_code <- as.factor(province_code$Province_code)
 province_code$Province_name <- as.factor(province_code$Province_name)
+
+head(province_code)
+str(province_code)
 ```
 
 
@@ -67,13 +68,16 @@ head(diemthi2019)
 diemthi2019$Province_code <- substr(as.character(diemthi2019$Student_index), start = 1, stop = 2)
 diemthi2019$Province_code <- as.factor(diemthi2019$Province_code)
 head(diemthi2019)
+
+#insert foreign language names with respect to code
+diemthi2019$Foreign_language_name <- diemthi2019$Foreign_language_code
+diemthi2019$Foreign_language_name <- mapvalues(diemthi2019$Foreign_language_code, from=c("N1", "N2", "N3", "N4", "N5", "N6"), to=c("English", "Russian", "French", "Chinese", "German", "Japanese"))
 ```
 
 ```{r}
 #Merge diemthi2019.csv and province_code.csv
 diemthi2019 <- join(diemthi2019, province_code, by = "Province_code")
 head(diemthi2019)
-
 ```
 
 
@@ -81,7 +85,7 @@ head(diemthi2019)
 #Calculate scores of combinations A00, A01, B00, C00, D00
 diemthi2019$A00 <- diemthi2019$Maths + diemthi2019$Physics + diemthi2019$Chemistry
 if(diemthi2019$Foreign_language_code == 'N1') {
-  diemthi2019$A01 <- diemthi2019$Maths + diemthi2019$Literature + diemthi2019$Foreign_language
+  diemthi2019$A01 <- diemthi2019$Maths + diemthi2019$Physics + diemthi2019$Foreign_language
 }
 diemthi2019$B00 <- diemthi2019$Maths + diemthi2019$Chemistry + diemthi2019$Biology
 diemthi2019$C00 <- diemthi2019$Literature + diemthi2019$History + diemthi2019$Geography
@@ -89,15 +93,22 @@ if(diemthi2019$Foreign_language_code == 'N1') {
   diemthi2019$D00 <- diemthi2019$Maths + diemthi2019$Literature + diemthi2019$Foreign_language
 }
 head(diemthi2019)
+
+#Calculate average of natural science combination and social science combination
+diemthi2019$Avg_natural_sciences <- (diemthi2019$Physics + diemthi2019$Chemistry + diemthi2019$Biology)/3
+diemthi2019$Avg_social_sciences <- (diemthi2019$History + diemthi2019$Geography + diemthi2019$Citizenship_education)/3
 ```
 
-
-
+```{r}
+#Reorder and choose necessary columns
+diemthi2019 <- diemthi2019[c('Student_index', 'Province_code', 'Province_name', 'Maths', 'Literature', 'Foreign_language' ,'Foreign_language_code', 'Foreign_language_name', 'Physics', 'Chemistry', 'Biology', 'Avg_natural_sciences', 'History', 'Geography', 'Citizenship_education', 'Avg_social_sciences', 'A00', 'A01', 'B00', 'C00', 'D00')]
+head(diemthi2019)
+```
 
 
 ```{r}
 #numerical df for correlation matrix
-diemthi2019_corr <- diemthi2019[c(2:16)]
+diemthi2019_corr <- diemthi2019[c(4:6,9:21)]
 
 #correlation matrix
 diemthi2019_corr_matrix <- cor(diemthi2019_corr, use="pairwise.complete.obs")
