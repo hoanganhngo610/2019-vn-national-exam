@@ -122,6 +122,21 @@ ggcorrplot(diemthi2019_corr_matrix, hc.order = TRUE,
 ```
 
 ```{r}
+#Number of students who takes each foreign language test
+table(diemthi2019$Foreign_language_name)
+```
+
+```{r}
+#Number of students who are eligible to be considered for admission with each combination A00, A01, B00, C00, D00
+combination_eligible <- list()
+for(i in c(17:21)) {
+  combination_eligible[[i-16]] = table(!is.na(diemthi2019[,i]), dnn = paste(colnames(diemthi2019)[i]))
+}
+combination_eligible
+```
+
+
+```{r}
 histogram_out <- list()
 for(i in c(4:6,9:21)) {
   x = diemthi2019[,i]
@@ -136,7 +151,7 @@ histogram_out
 ```{r}
 table_score <- list()
 for(i in c(4:6,9:21)) {
-  table_score[[i]] = table(diemthi2019[,i], dnn = paste(str(colnames(diemthi2019)[i]),'_scores'))
+  table_score[[i]] = table(diemthi2019[,i], dnn = paste(colnames(diemthi2019)[i],'_scores'))
 }
 
 for(i in c(4:6,9:21)) {
