@@ -130,11 +130,26 @@ table(diemthi2019$Foreign_language_name)
 #Number of students who are eligible to be considered for admission with each combination A00, A01, B00, C00, D00
 combination_eligible <- list()
 for(i in c(17:21)) {
+  print(paste('The number of students who are eligible to be considered for combination', colnames(diemthi2019[i]), 'is', sum(!is.na(diemthi2019[,i]) == TRUE))) 
   combination_eligible[[i-16]] = table(!is.na(diemthi2019[,i]), dnn = paste(colnames(diemthi2019)[i]))
 }
 combination_eligible
 ```
 
+```{r}
+#Number of students who took all natural science subjects, all social science subjects, or all of both
+print(paste('The number of students who took all natural science subjects is', sum(!is.na(diemthi2019[,13]) == TRUE)))
+print(paste('The number of students who took all social science subjects is', sum(!is.na(diemthi2019[,17]) == TRUE)))
+print(paste('The number of students who took all natural and social science subjects is', sum(!is.na(diemthi2019[,13]) == TRUE & !is.na(diemthi2019[,17]) == TRUE)))
+```
+
+
+```{r}
+#Find the maximum score for each column
+for(i in c(4:6,9:21)) {
+  print(paste('The maximum score of',colnames(diemthi2019)[i],'is', max(diemthi2019[,i], na.rm = TRUE)))
+}
+```
 
 ```{r}
 histogram_out <- list()
