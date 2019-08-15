@@ -28,15 +28,13 @@ diemthi2019 <- read.csv('~/Desktop/2019 vietnam national high school exam/diemth
 
 #Choose necessary columns and reorder them
 head(diemthi2019)
+str(diemthi2019)
 
 #Import and modify dataset province_code.csv
 province_code <- read.csv('~/Desktop/2019 vietnam national high school exam/province_code.csv', sep = ";", row.names = NULL)
-for (i in 1:9) {
-  province_code[i,1] <- paste('0',as.character(province_code[i,1]), sep = '')
-}
 
 #Change column type of province_code.csv
-province_code$Province_code <- as.factor(province_code$Province_code)
+province_code$Province_code <- as.numeric(province_code$Province_code)
 province_code$Province_name <- as.factor(province_code$Province_name)
 
 head(province_code)
@@ -65,13 +63,17 @@ head(diemthi2019)
 
 ```{r}
 #Insert province_code for diemthi2019.csv
-diemthi2019$Province_code <- substr(as.character(diemthi2019$Student_index), start = 1, stop = 2)
-diemthi2019$Province_code <- as.factor(diemthi2019$Province_code)
-head(diemthi2019)
+Province_code <- ifelse(diemthi2019$Student_index > 10000000,
+            substr(as.character(diemthi2019$Student_index), start = 1, stop = 2),
+            substr(as.character(diemthi2019$Student_index), start = 1, stop = 1)
+)
+diemthi2019$Province_code <- as.numeric(Province_code)
 
 #insert foreign language names with respect to code
 diemthi2019$Foreign_language_name <- diemthi2019$Foreign_language_code
 diemthi2019$Foreign_language_name <- mapvalues(diemthi2019$Foreign_language_code, from=c("N1", "N2", "N3", "N4", "N5", "N6"), to=c("English", "Russian", "French", "Chinese", "German", "Japanese"))
+
+head(diemthi2019)
 ```
 
 ```{r}
@@ -119,5 +121,40 @@ ggcorrplot(diemthi2019_corr_matrix, hc.order = TRUE,
    lab = TRUE)
 ```
 
+```{r}
+histogram_out <- list()
+for(i in c(4:6,9:21)) {
+  x = diemthi2019[,i]
+  histogram_out[[i]] <- ggplot(data.frame(x), aes(x)) + 
+    geom_histogram(binwidth = 0.1, color="black", fill="blue") +
+    labs(title=paste("Score histogram for",colnames(diemthi2019)[i]), x=colnames(diemthi2019)[i], y="Count") + 
+    geom_vline(data = diemthi2019, xintercept = mean(diemthi2019[,i], na.rm = TRUE), color = "red", linetype = "dashed", size = 1)
+}
+histogram_out
+```
+
+```{r}
+table_score <- list()
+for(i in c(4:6,9:21)) {
+  table_score[[i]] = table(diemthi2019[,i], dnn = paste(str(colnames(diemthi2019)[i]),'_scores'))
+}
+
+for(i in c(4:6,9:21)) {
+  View(table_score[[i]])
+}
+#table_score
+```
+
+```{r}
+summary(diemthi2019[,3])
+```
+
+```{r}
+province_frequency <- table(diemthi2019[,3])
+province_frequency <- sort(province_frequency, decreasing = FALSE)
+View(province_frequency)
+par(las=2)
+barplot(province_frequency, main="Province Distribution", horiz=TRUE)
+```
 
 
