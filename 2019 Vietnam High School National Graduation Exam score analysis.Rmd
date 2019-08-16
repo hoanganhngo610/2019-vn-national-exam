@@ -19,6 +19,7 @@ library(dplyr)
 library(corrplot)
 library(ggplot2)
 library(ggcorrplot)
+library(data.table)
 ```
 
 
@@ -127,6 +128,14 @@ table(diemthi2019$Foreign_language_name)
 ```
 
 ```{r}
+#Number of students who took each subject
+took_subject <- list()
+for(i in c(4:6, 9:11, 13:15)) {
+  print(paste('The number of students who took the subject', colnames(diemthi2019[i]), 'is', sum(!is.na(diemthi2019[,i]) == TRUE))) 
+}
+```
+
+```{r}
 #Number of students who are eligible to be considered for admission with each combination A00, A01, B00, C00, D00
 combination_eligible <- list()
 for(i in c(17:21)) {
@@ -181,10 +190,36 @@ summary(diemthi2019[,3])
 
 ```{r}
 province_frequency <- table(diemthi2019[,3])
-province_frequency <- sort(province_frequency, decreasing = FALSE)
-View(province_frequency)
+ #sort(province_frequency, decreasing = FALSE) 
+province_frequency <-count(diemthi2019, Province_name)
+names(province_frequency) <- c('Province', 'Frequency')
+province_frequency <- province_frequency[order(-province_frequency$Frequency),]
 par(las=2)
-barplot(province_frequency, main="Province Distribution", horiz=TRUE)
+View(province_frequency)
+
+ggplot(data=province_frequency, aes(x=reorder(Province,Frequency),y=Frequency)) +
+  geom_bar(position="dodge", stat="identity") + 
+  coord_flip() +
+  ggtitle(paste('Barplot of number of students by province')) +
+  labs(x = "Province", y = "Number of students")
 ```
+
+
+```{r}
+barplot_mean <- list()
+for(i in c(4:6,9:21)) {
+  x <- aggregate(diemthi2019[,i] ~ diemthi2019$Province_name, diemthi2019, mean)
+  names(x) <- c('Province', 'Mean')
+  x <- x[order(x$Mean),]
+  
+  barplot_mean[[i]] <- ggplot(data=x, aes(x=reorder(Province,Mean),y=Mean)) +
+  geom_bar(position="dodge",stat="identity") + 
+  coord_flip() +
+  ggtitle(paste('Barplot for mean of', colnames(diemthi2019)[i], 'by province')) + 
+  labs(x = "Province", y = "Mean score")
+}
+barplot_mean
+```
+
 
 
