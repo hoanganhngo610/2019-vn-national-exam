@@ -169,8 +169,37 @@ for(i in c(4:6,9:21)) {
     labs(title=paste("Score histogram for",colnames(diemthi2019)[i]), x=colnames(diemthi2019)[i], y="Count") + 
     geom_vline(data = diemthi2019, xintercept = mean(diemthi2019[,i], na.rm = TRUE), color = "red", linetype = "dashed", size = 1)
 }
+  
+  print(paste('The mean score of', colnames(diemthi2019)[i], 'is', mean(diemthi2019[,i])))
+  
 histogram_out
+
+summary_scores_subjects <- data.frame(matrix(0, ncol = 22, nrow = 11))
+names(summary_scores_subjects) <- c('Number of students participated',
+                                    'Minimum score',
+                                    '25th percentile',
+                                    'Median',
+                                    'Mean score',
+                                    '75th percentile',
+                                    'Maximum score',
+                                    'Number of students with scores less than or equal to 1',
+#1 is the cutoff score to be considered for graduation, apart from avg_natural_sciences and avg_social_sciences
+                                    'Number of students with scores less than 5',
+                                    'Score with highest frequency (mode)')
+
+summary_scores_combinations <- data.frame(matrix(0, ncol = 22, nrow = 11))
+names(summary_scores_subjects) <- c('Number of students participated',
+                                    'Minimum score',
+                                    '25th percentile',
+                                    'Median',
+                                    'Mean score',
+                                    '75th percentile',
+                                    'Maximum score',
+#15 is usually the cutoff (minimum) score to be considered for university admission
+                                    'Number of students with scores less than 15',
+                                    'Score with highest frequency (mode)')
 ```
+
 
 ```{r}
 table_score <- list()
@@ -201,7 +230,14 @@ ggplot(data=province_frequency, aes(x=reorder(Province,Frequency),y=Frequency)) 
   geom_bar(position="dodge", stat="identity") + 
   coord_flip() +
   ggtitle(paste('Barplot of number of students by province')) +
-  labs(x = "Province", y = "Number of students")
+  labs(x = "Province", y = "Number of students") +
+  geom_text(
+    aes(label = Frequency), colour = "red", 
+    hjust = -0.5, size = 3,
+    position = position_dodge(width = 1),
+    inherit.aes = TRUE
+  )
+
 ```
 
 
@@ -216,7 +252,13 @@ for(i in c(4:6,9:21)) {
   geom_bar(position="dodge",stat="identity") + 
   coord_flip() +
   ggtitle(paste('Barplot for mean of', colnames(diemthi2019)[i], 'by province')) + 
-  labs(x = "Province", y = "Mean score")
+  labs(x = "Province", y = "Mean score") +
+  geom_text(
+    aes(label = Mean), colour = "red",
+    hjust = -0.5, size = 3,
+    position = position_dodge(width = 1),
+    inherit.aes = TRUE
+  )
 }
 barplot_mean
 ```
