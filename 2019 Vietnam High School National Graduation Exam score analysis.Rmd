@@ -169,13 +169,21 @@ for(i in c(4:6,9:21)) {
     labs(title=paste("Score histogram for",colnames(diemthi2019)[i]), x=colnames(diemthi2019)[i], y="Count") + 
     geom_vline(data = diemthi2019, xintercept = mean(diemthi2019[,i], na.rm = TRUE), color = "red", linetype = "dashed", size = 1)
 }
-  
-  print(paste('The mean score of', colnames(diemthi2019)[i], 'is', mean(diemthi2019[,i])))
-  
 histogram_out
+```
 
-summary_scores_subjects <- data.frame(matrix(0, ncol = 22, nrow = 11))
-names(summary_scores_subjects) <- c('Number of students participated',
+```{r}
+# Define the function getmode in R to get the mode of data (appearance with highest frequency)
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+```
+
+```{r}
+summary_scores_subjects <- data.frame(matrix(NA, ncol = 11, nrow = 21))
+names(summary_scores_subjects) <- c('Subject',
+                                    'Number of students participated',
                                     'Minimum score',
                                     '25th percentile',
                                     'Median',
@@ -186,9 +194,29 @@ names(summary_scores_subjects) <- c('Number of students participated',
 #1 is the cutoff score to be considered for graduation, apart from avg_natural_sciences and avg_social_sciences
                                     'Number of students with scores less than 5',
                                     'Score with highest frequency (mode)')
+for(i in c(4:6, 9:16)) {
+  summary_scores_subjects[i,1] <- colnames(diemthi2019)[i]
+  summary_scores_subjects[i,2] <- sum(!is.na(diemthi2019[,i]) == TRUE)
+  summary_scores_subjects[i,3] <- min(diemthi2019[,i], na.rm = TRUE)
+  summary_scores_subjects[i,4] <- quantile(diemthi2019[,i], 0.25, na.rm = TRUE)
+  summary_scores_subjects[i,5] <- quantile(diemthi2019[,i], 0.5, na.rm = TRUE)
+  summary_scores_subjects[i,6] <- mean(diemthi2019[,i], na.rm = TRUE)
+  summary_scores_subjects[i,7] <- quantile(diemthi2019[,i], 0.75, na.rm = TRUE)
+  summary_scores_subjects[i,8] <- max(diemthi2019[,i], na.rm = TRUE)
+  summary_scores_subjects[i,9] <- sum(diemthi2019[,i] <= 1, na.rm = TRUE)
+  summary_scores_subjects[i,10] <- sum(diemthi2019[,i] <= 5, na.rm = TRUE)
+  summary_scores_subjects[i,11] <- getmode(na.omit(diemthi2019[,i]))
+}
 
-summary_scores_combinations <- data.frame(matrix(0, ncol = 22, nrow = 11))
-names(summary_scores_subjects) <- c('Number of students participated',
+summary_scores_subjects <- na.omit(summary_scores_subjects)
+View(summary_scores_subjects)
+
+```
+
+```{r}
+summary_scores_combinations <- data.frame(matrix(NA, ncol = 10, nrow = 21))
+names(summary_scores_combinations) <- c('Combination',
+                                    'Number of students participated',
                                     'Minimum score',
                                     '25th percentile',
                                     'Median',
@@ -198,6 +226,23 @@ names(summary_scores_subjects) <- c('Number of students participated',
 #15 is usually the cutoff (minimum) score to be considered for university admission
                                     'Number of students with scores less than 15',
                                     'Score with highest frequency (mode)')
+
+for(i in c(17:21)) {
+  summary_scores_combinations[i,1] <- colnames(diemthi2019)[i]
+  summary_scores_combinations[i,2] <- sum(!is.na(diemthi2019[,i]) == TRUE)
+  summary_scores_combinations[i,3] <- min(diemthi2019[,i], na.rm = TRUE)
+  summary_scores_combinations[i,4] <- quantile(diemthi2019[,i], 0.25, na.rm = TRUE)
+  summary_scores_combinations[i,5] <- quantile(diemthi2019[,i], 0.5, na.rm = TRUE)
+  summary_scores_combinations[i,6] <- mean(diemthi2019[,i], na.rm = TRUE)
+  summary_scores_combinations[i,7] <- quantile(diemthi2019[,i], 0.75, na.rm = TRUE)
+  summary_scores_combinations[i,8] <- max(diemthi2019[,i], na.rm = TRUE)
+  summary_scores_combinations[i,9] <- sum(diemthi2019[,i] <= 15, na.rm = TRUE)
+  summary_scores_combinations[i,10] <- getmode(na.omit(diemthi2019[,i]))
+}
+
+summary_scores_combinations <- na.omit(summary_scores_combinations)
+View(summary_scores_combinations)
+
 ```
 
 
@@ -246,6 +291,7 @@ barplot_mean <- list()
 for(i in c(4:6,9:21)) {
   x <- aggregate(diemthi2019[,i] ~ diemthi2019$Province_name, diemthi2019, mean)
   names(x) <- c('Province', 'Mean')
+  x$Mean <- round(x$Mean, digits = 3)
   x <- x[order(x$Mean),]
   
   barplot_mean[[i]] <- ggplot(data=x, aes(x=reorder(Province,Mean),y=Mean)) +
