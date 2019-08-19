@@ -181,7 +181,7 @@ getmode <- function(v) {
 ```
 
 ```{r}
-summary_scores_subjects <- data.frame(matrix(NA, ncol = 11, nrow = 21))
+summary_scores_subjects <- data.frame(matrix(NA, ncol = 13, nrow = 21))
 names(summary_scores_subjects) <- c('Subject',
                                     'Number of students participated',
                                     'Minimum score',
@@ -191,8 +191,10 @@ names(summary_scores_subjects) <- c('Subject',
                                     '75th percentile',
                                     'Maximum score',
                                     'Number of students with scores less than or equal to 1',
+                                    'Percentage of students with scores less than or equal to 1',
 #1 is the cutoff score to be considered for graduation, apart from avg_natural_sciences and avg_social_sciences
                                     'Number of students with scores less than 5',
+                                    'Percentage of students with scores less than 5',
                                     'Score with highest frequency (mode)')
 for(i in c(4:6, 9:16)) {
   summary_scores_subjects[i,1] <- colnames(diemthi2019)[i]
@@ -204,8 +206,10 @@ for(i in c(4:6, 9:16)) {
   summary_scores_subjects[i,7] <- quantile(diemthi2019[,i], 0.75, na.rm = TRUE)
   summary_scores_subjects[i,8] <- max(diemthi2019[,i], na.rm = TRUE)
   summary_scores_subjects[i,9] <- sum(diemthi2019[,i] <= 1, na.rm = TRUE)
-  summary_scores_subjects[i,10] <- sum(diemthi2019[,i] <= 5, na.rm = TRUE)
-  summary_scores_subjects[i,11] <- getmode(na.omit(diemthi2019[,i]))
+  summary_scores_subjects[i,10] <- summary_scores_subjects[i,9]/nrow(diemthi2019)*100
+  summary_scores_subjects[i,11] <- sum(diemthi2019[,i] <= 5, na.rm = TRUE)
+  summary_scores_subjects[i,12] <- summary_scores_subjects[i,11]/nrow(diemthi2019)*100
+  summary_scores_subjects[i,13] <- getmode(na.omit(diemthi2019[,i]))
 }
 
 summary_scores_subjects <- na.omit(summary_scores_subjects)
@@ -214,7 +218,7 @@ View(summary_scores_subjects)
 ```
 
 ```{r}
-summary_scores_combinations <- data.frame(matrix(NA, ncol = 10, nrow = 21))
+summary_scores_combinations <- data.frame(matrix(NA, ncol = 11, nrow = 21))
 names(summary_scores_combinations) <- c('Combination',
                                     'Number of students participated',
                                     'Minimum score',
@@ -225,6 +229,7 @@ names(summary_scores_combinations) <- c('Combination',
                                     'Maximum score',
 #15 is usually the cutoff (minimum) score to be considered for university admission
                                     'Number of students with scores less than 15',
+                                    'Percentage of students with scores less than 15',
                                     'Score with highest frequency (mode)')
 
 for(i in c(17:21)) {
@@ -237,7 +242,8 @@ for(i in c(17:21)) {
   summary_scores_combinations[i,7] <- quantile(diemthi2019[,i], 0.75, na.rm = TRUE)
   summary_scores_combinations[i,8] <- max(diemthi2019[,i], na.rm = TRUE)
   summary_scores_combinations[i,9] <- sum(diemthi2019[,i] <= 15, na.rm = TRUE)
-  summary_scores_combinations[i,10] <- getmode(na.omit(diemthi2019[,i]))
+  summary_scores_combinations[i,10] <- summary_scores_combinations[i,9]/nrow(diemthi2019)*100
+  summary_scores_combinations[i,11] <- getmode(na.omit(diemthi2019[,i]))
 }
 
 summary_scores_combinations <- na.omit(summary_scores_combinations)
@@ -245,6 +251,22 @@ View(summary_scores_combinations)
 
 ```
 
+```{r}
+diemthi2019_barplot_1 <- diemthi2019[,c(4:6,9:11,13:15)]
+ggplot(stack(diemthi2019_barplot_1), aes(x = ind, y = values)) +
+  labs(title = "Boxplot of scores by subjects", x = "Subjects", y = "Scores") + 
+  geom_boxplot()
+
+diemthi2019_barplot_2 <- diemthi2019[,c(12,16)]
+ggplot(stack(diemthi2019_barplot_2), aes(x = ind, y = values)) +
+  labs(title = "Boxplot of average scores of natural/social science subjects", x = "Average Natural/Science subjects", y = "Scores") + 
+  geom_boxplot()
+
+diemthi2019_barplot_3 <- diemthi2019[,c(17:21)]
+ggplot(stack(diemthi2019_barplot_3), aes(x = ind, y = values)) +
+  labs(title = "Boxplot of scores by combinations of subjects", x = "Combinations", y = "Scores") + 
+  geom_boxplot()
+```
 
 ```{r}
 table_score <- list()
