@@ -20,6 +20,8 @@ library(corrplot)
 library(ggplot2)
 library(ggcorrplot)
 library(data.table)
+library(plotrix)
+library(e1071)
 ```
 
 
@@ -36,7 +38,7 @@ province_code <- read.csv('~/Desktop/2019 vietnam national high school exam/prov
 
 #Change column type of province_code.csv
 province_code$Province_code <- as.numeric(province_code$Province_code)
-province_code$Province_name <- as.factor(province_code$Province_name)
+province_code$Province_name <- factor(province_code$Province_name)
 
 head(province_code)
 str(province_code)
@@ -154,13 +156,6 @@ print(paste('The number of students who took all natural and social science subj
 
 
 ```{r}
-#Find the maximum score for each column
-for(i in c(4:6,9:21)) {
-  print(paste('The maximum score of',colnames(diemthi2019)[i],'is', max(diemthi2019[,i], na.rm = TRUE)))
-}
-```
-
-```{r}
 histogram_out <- list()
 for(i in c(4:6,9:21)) {
   x = diemthi2019[,i]
@@ -195,6 +190,7 @@ names(summary_scores_subjects) <- c('Subject',
 #1 is the cutoff score to be considered for graduation, apart from avg_natural_sciences and avg_social_sciences
                                     'Number of students with scores less than 5',
                                     'Percentage of students with scores less than 5',
+                                    #'Number of students with maximum score',
                                     'Score with highest frequency (mode)')
 for(i in c(4:6, 9:16)) {
   summary_scores_subjects[i,1] <- colnames(diemthi2019)[i]
@@ -209,7 +205,8 @@ for(i in c(4:6, 9:16)) {
   summary_scores_subjects[i,10] <- summary_scores_subjects[i,9]/nrow(diemthi2019)*100
   summary_scores_subjects[i,11] <- sum(diemthi2019[,i] <= 5, na.rm = TRUE)
   summary_scores_subjects[i,12] <- summary_scores_subjects[i,11]/nrow(diemthi2019)*100
-  summary_scores_subjects[i,13] <- getmode(na.omit(diemthi2019[,i]))
+  summary_scores_subjects[i,13] <- sum(diemthi2019[,i] == max(diemthi2019[,i], na.rm = TRUE), na.rm = TRUE)
+  summary_scores_subjects[i,14] <- getmode(na.omit(diemthi2019[,i]))
 }
 
 summary_scores_subjects <- na.omit(summary_scores_subjects)
@@ -218,7 +215,7 @@ View(summary_scores_subjects)
 ```
 
 ```{r}
-summary_scores_combinations <- data.frame(matrix(NA, ncol = 11, nrow = 21))
+summary_scores_combinations <- data.frame(matrix(NA, ncol = 14, nrow = 21))
 names(summary_scores_combinations) <- c('Combination',
                                     'Number of students participated',
                                     'Minimum score',
@@ -230,6 +227,9 @@ names(summary_scores_combinations) <- c('Combination',
 #15 is usually the cutoff (minimum) score to be considered for university admission
                                     'Number of students with scores less than 15',
                                     'Percentage of students with scores less than 15',
+                                    'Number of students with maximum score',
+                                    'Student index of student with highest score',
+                                    'Province of student with highest score',
                                     'Score with highest frequency (mode)')
 
 for(i in c(17:21)) {
@@ -242,8 +242,11 @@ for(i in c(17:21)) {
   summary_scores_combinations[i,7] <- quantile(diemthi2019[,i], 0.75, na.rm = TRUE)
   summary_scores_combinations[i,8] <- max(diemthi2019[,i], na.rm = TRUE)
   summary_scores_combinations[i,9] <- sum(diemthi2019[,i] <= 15, na.rm = TRUE)
-  summary_scores_combinations[i,10] <- summary_scores_combinations[i,9]/nrow(diemthi2019)*100
-  summary_scores_combinations[i,11] <- getmode(na.omit(diemthi2019[,i]))
+  summary_scores_combinations[i,10] <- summary_scores_combinations[i,9]/summary_scores_combinations[i,2]*100
+  summary_scores_combinations[i,11] <- sum(diemthi2019[,i] == max(diemthi2019[,i], na.rm = TRUE), na.rm = TRUE)
+  summary_scores_combinations[i,12] <- diemthi2019[which.max(diemthi2019[,i]),1]
+  summary_scores_combinations[i,13] <- as.character(diemthi2019[which.max(diemthi2019[,i]),3])
+  summary_scores_combinations[i,14] <- getmode(na.omit(diemthi2019[,i]))
 }
 
 summary_scores_combinations <- na.omit(summary_scores_combinations)
@@ -252,21 +255,45 @@ View(summary_scores_combinations)
 ```
 
 ```{r}
-diemthi2019_barplot_1 <- diemthi2019[,c(4:6,9:11,13:15)]
-ggplot(stack(diemthi2019_barplot_1), aes(x = ind, y = values)) +
+#skewness & kurtosis
+```
+
+
+```{r}
+diemthi2019_plot_1 <- diemthi2019[,c(4:6,9:11,13:15)]
+ggplot(stack(diemthi2019_plot_1), aes(x = ind, y = values)) +
   labs(title = "Boxplot of scores by subjects", x = "Subjects", y = "Scores") + 
   geom_boxplot()
 
-diemthi2019_barplot_2 <- diemthi2019[,c(12,16)]
-ggplot(stack(diemthi2019_barplot_2), aes(x = ind, y = values)) +
+diemthi2019_plot_2 <- diemthi2019[,c(12,16)]
+ggplot(stack(diemthi2019_plot_2), aes(x = ind, y = values)) +
   labs(title = "Boxplot of average scores of natural/social science subjects", x = "Average Natural/Science subjects", y = "Scores") + 
   geom_boxplot()
 
-diemthi2019_barplot_3 <- diemthi2019[,c(17:21)]
-ggplot(stack(diemthi2019_barplot_3), aes(x = ind, y = values)) +
+diemthi2019_plot_3 <- diemthi2019[,c(17:21)]
+ggplot(stack(diemthi2019_plot_3), aes(x = ind, y = values)) +
   labs(title = "Boxplot of scores by combinations of subjects", x = "Combinations", y = "Scores") + 
   geom_boxplot()
 ```
+
+```{r}
+ggplot(stack(diemthi2019_barplot_1), aes(x = ind, y = values)) +
+  labs(title = "Violin plot of scores by subjects", x = "Subjects", y = "Scores") + 
+  geom_violin() + 
+  geom_boxplot(width=.1)
+
+ggplot(stack(diemthi2019_plot_2), aes(x = ind, y = values)) +
+  labs(title = "Boxplot of average scores of natural/social science subjects", x = "Average Natural/Science subjects", y = "Scores") +  
+  geom_violin() + 
+  geom_boxplot(width=.1)
+
+ggplot(stack(diemthi2019_plot_3), aes(x = ind, y = values)) +
+  labs(title = "Boxplot of scores by combinations of subjects", x = "Combinations", y = "Scores") +
+  geom_violin() + 
+  geom_boxplot(width=.1)
+
+```
+
 
 ```{r}
 table_score <- list()
@@ -281,7 +308,25 @@ for(i in c(4:6,9:21)) {
 ```
 
 ```{r}
-summary(diemthi2019[,3])
+statistics_scores <- data.frame(matrix(NA, ncol = 6, nrow = 21))
+names(statistics_scores) <- c('Subject/Combination',
+                              'No. of observations',
+                              'Standard Deviation',
+                              'SE Mean',
+                              'Skewness',
+                              'Kurtosis')
+
+for(i in c(4:6, 9:21)) {
+  statistics_scores[i,1] <- colnames(diemthi2019)[i]
+  statistics_scores[i,2] <- sum(!is.na(diemthi2019[,i]) == TRUE)
+  statistics_scores[i,3] <- sd(diemthi2019[,i], na.rm = TRUE)
+  statistics_scores[i,4] <- std.error(diemthi2019[,i], na.rm = TRUE)
+  statistics_scores[i,5] <- skewness(diemthi2019[,i], na.rm = TRUE)
+  statistics_scores[i,6] <- kurtosis(diemthi2019[,i], na.rm = TRUE)
+}
+
+statistics_scores <- na.omit(statistics_scores)
+View(statistics_scores)
 ```
 
 ```{r}
