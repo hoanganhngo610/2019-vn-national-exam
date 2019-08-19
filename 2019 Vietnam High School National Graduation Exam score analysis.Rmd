@@ -177,7 +177,7 @@ getmode <- function(v) {
 ```
 
 ```{r}
-summary_scores_subjects <- data.frame(matrix(NA, ncol = 13, nrow = 21))
+summary_scores_subjects <- data.frame(matrix(NA, ncol = 14, nrow = 21))
 names(summary_scores_subjects) <- c('Subject',
                                     'Number of students participated',
                                     'Minimum score',
@@ -191,7 +191,7 @@ names(summary_scores_subjects) <- c('Subject',
 #1 is the cutoff score to be considered for graduation, apart from avg_natural_sciences and avg_social_sciences
                                     'Number of students with scores less than 5',
                                     'Percentage of students with scores less than 5',
-                                    #'Number of students with maximum score',
+                                    'Number of students with maximum score',
                                     'Score with highest frequency (mode)')
 for(i in c(4:6, 9:16)) {
   summary_scores_subjects[i,1] <- colnames(diemthi2019)[i]
