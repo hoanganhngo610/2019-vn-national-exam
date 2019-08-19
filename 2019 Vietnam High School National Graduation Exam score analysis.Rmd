@@ -22,6 +22,7 @@ library(ggcorrplot)
 library(data.table)
 library(plotrix)
 library(e1071)
+library(tseries)
 ```
 
 
@@ -327,6 +328,11 @@ for(i in c(4:6, 9:21)) {
 
 statistics_scores <- na.omit(statistics_scores)
 View(statistics_scores)
+
+for(i in c(4:6, 9:21)) {
+  print(paste('Jarque-Bera test for',colnames(diemthi2019)[i],'scores'))
+  print(jarque.bera.test(na.omit(diemthi2019[,i])))
+}
 ```
 
 ```{r}
@@ -351,7 +357,6 @@ ggplot(data=province_frequency, aes(x=reorder(Province,Frequency),y=Frequency)) 
   )
 
 ```
-
 
 ```{r}
 barplot_mean <- list()
