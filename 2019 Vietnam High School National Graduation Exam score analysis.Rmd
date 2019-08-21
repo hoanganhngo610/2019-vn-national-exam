@@ -414,6 +414,9 @@ ranking_mean_subjects_by_province[,1] <- summary_mean_subjects_by_province$Provi
 for(i in c(2:11)) {
   ranking_mean_subjects_by_province[,i] <- rank(-summary_mean_subjects_by_province[,i],ties.method= "max")
 }
+for (i in c(2:11)) {
+  colnames(ranking_mean_subjects_by_province)[i] <- paste('Rank',substring(colnames(summary_mean_subjects_by_province)[i],6))
+}
 View(ranking_mean_subjects_by_province)
 
 ranking_mean_avg_by_province <- data.frame(matrix(ncol = ncol(summary_mean_avg_by_province), nrow = nrow(summary_mean_avg_by_province)))
@@ -421,12 +424,18 @@ ranking_mean_avg_by_province[,1] <- summary_mean_avg_by_province$Province
 for(i in c(2:3)) {
   ranking_mean_avg_by_province[,i] <- rank(-summary_mean_avg_by_province[,i],ties.method= "max")
 }
+for (i in c(2:3)) {
+  colnames(ranking_mean_avg_by_province)[i] <- paste('Rank',substring(colnames(summary_mean_avg_by_province)[i],6))
+}
 View(ranking_mean_avg_by_province)
 
 ranking_mean_combinations_by_province <- data.frame(matrix(ncol = ncol(summary_mean_combinations_by_province), nrow = nrow(summary_mean_combinations_by_province)))
 ranking_mean_combinations_by_province[,1] <- summary_mean_combinations_by_province$Province
 for(i in c(2:6)) {
   ranking_mean_combinations_by_province[,i] <- rank(-summary_mean_combinations_by_province[,i],ties.method= "max")
+}
+for (i in c(2:6)) {
+  colnames(ranking_mean_combinations_by_province)[i] <- paste('Rank',substring(colnames(summary_mean_combinations_by_province)[i],6))
 }
 View(ranking_mean_combinations_by_province)
 ```
