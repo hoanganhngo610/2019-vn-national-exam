@@ -278,7 +278,7 @@ ggplot(stack(diemthi2019_plot_3), aes(x = ind, y = values)) +
 ```
 
 ```{r}
-ggplot(stack(diemthi2019_barplot_1), aes(x = ind, y = values)) +
+ggplot(stack(diemthi2019_plot_1), aes(x = ind, y = values)) +
   labs(title = "Violin plot of scores by subjects", x = "Subjects", y = "Scores") + 
   geom_violin() + 
   geom_boxplot(width=.1)
