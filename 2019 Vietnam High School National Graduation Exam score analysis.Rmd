@@ -39,7 +39,7 @@ province_code <- read.csv('~/Desktop/2019 vietnam national high school exam/prov
 
 #Change column type of province_code.csv
 province_code$Province_code <- as.numeric(province_code$Province_code)
-province_code$Province_name <- factor(province_code$Province_name)
+province_code$Province_name <- as.factor(province_code$Province_name)
 
 head(province_code)
 str(province_code)
