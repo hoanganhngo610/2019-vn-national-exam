@@ -23,6 +23,7 @@ library(data.table)
 library(plotrix)
 library(e1071)
 library(tseries)
+library(psych)
 ```
 
 
@@ -123,6 +124,22 @@ View(diemthi2019_corr_matrix)
 #correlation heatmap
 ggcorrplot(diemthi2019_corr_matrix, hc.order = TRUE,
    lab = TRUE)
+```
+
+```{r}
+pairs.panels(diemthi2019[,c(4:6,9:16)], 
+             method = "pearson", # correlation method
+             hist.col = "#00AFBB",
+             density = TRUE,  # show density plots
+             ellipses = TRUE # show correlation ellipses
+             )
+
+pairs.panels(diemthi2019[,c(17:21)], 
+             method = "pearson", # correlation method
+             hist.col = "#00AFBB",
+             density = TRUE,  # show density plots
+             ellipses = TRUE # show correlation ellipses
+             )
 ```
 
 ```{r}
